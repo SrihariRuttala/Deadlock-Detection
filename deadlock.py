@@ -12,10 +12,19 @@ with open('input2.txt', 'r') as f:
 		need_release.append(data[i][2])
 		resources.append(int(data[i][4]))
 
-if max(processes) < max(resources):
-	n = max(resources)+1
-else:
-	n = max(processes)+1
+# if max(processes) < max(resources):
+# 	n = max(resources)+1
+# else:
+# 	n = max(processes)+1
+
+n = max(resources) + max(processes) + 1
+# print(n)
+arr = []
+for i in range(len(resources)):
+	ele = resources[i] + max(processes) 
+	arr.append(ele)
+
+resources = arr
 
 m = len(data)
 
@@ -29,12 +38,10 @@ for i in resources:
 	resource_map[i] = 0
 
 for i in range(m):
-
 	if need_release[i] == 'N' and resource_map[resources[i]] == 0:
-		# print(proce)
 		matrix[processes[i]][resources[i]] = 1
-		resource_map[i] = 1
-	elif need_release[i] == 'N' and resource_map[resources[i]] == 1:
+		resource_map[resources[i]] = 1
+	elif need_release[i] == 'N' and resource_map[resources[i]] == 1:		
 		matrix[resources[i]][processes[i]] = 1
 		if resources[i] not in priority_map:
 			priority_map[resources[i]] = [processes[i]]
@@ -43,7 +50,6 @@ for i in range(m):
 			priority_map[resources[i]].append(processes[i])
 	elif need_release[i] == 'R':
 		matrix[processes[i]][resources[i]] = 0
-		# print(matrix)
 		resource_map[i] = 0
 		if resources[i] in priority_map.keys():
 			proc = priority_map[resources[i]].pop(0)
